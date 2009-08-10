@@ -151,8 +151,11 @@ void initGDT()
 	*  Please check the table above in the tutorial in order
 	*  to see exactly what each value means */
 	
-	char accessbyte = assembleAccessbyte(1, 0, 1, 1);
-	char flagbyte = assembleFlagbyte(1, 1);
+	char accessbyte;
+	char flagbyte;
+	
+	accessbyte = assembleAccessbyte(1, 0, 1, 1);
+	flagbyte = assembleFlagbyte(1, 1);
 	setGDTgate(1, 0, 0xFFFFFFFF, accessbyte, flagbyte);
 
 	/* The third entry is our Data Segment. It's EXACTLY the

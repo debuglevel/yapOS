@@ -87,7 +87,7 @@ char assembleIDTFlagbyte (unsigned char enable, unsigned char priv, unsigned cha
 	if (bits == 0) {
 		flag |= 0x00;	
 	}else if (bits == 1) {
-		flag |= 0x10; //0000 1000
+		flag |= 0x08; //0000 1000
 	}
 	
 	//Type: Sollte bei einem Interruptgate immer 110b sein. 

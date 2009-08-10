@@ -49,7 +49,8 @@ extern void isr31();*/
 *  hex. */
 void initISRs()
 {
-    setIDTgate(0, (unsigned)isr0, 0x08, 0x8E);
+		char flag = assembleIDTFlagbyte(1, 0, 1);	//0x8E
+    setIDTgate(0, (unsigned)isr0, 0x08, flag);
     setIDTgate(1, (unsigned)isr1, 0x08, 0x8E);
     setIDTgate(2, (unsigned)isr2, 0x08, 0x8E);
     setIDTgate(3, (unsigned)isr3, 0x08, 0x8E);
