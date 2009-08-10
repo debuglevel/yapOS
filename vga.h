@@ -1,6 +1,8 @@
 #ifndef VGA_H
 #define VGA_H
 
+void initVideo();
+
 void clearScreen();
 void fillScreen(unsigned char chr, unsigned char color);
 
