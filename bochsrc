@@ -1,0 +1,31 @@
+# Größe des Hauptspeichers.
+megs:32
+
+# Wo stecken BIOS und VGA-ROM?
+#romimage: file=BIOS-bochs-latest, address=0xf0000
+vgaromimage: /usr/share/vgabios/vgabios.bin
+
+# Ein Diskettenlaufwerk, in dem eine Diskette steckt.
+#floppya: 1_44=a:, status=inserted
+floppya: image=floppy.img, status=inserted
+
+# Bootlaufwerk festlegen.
+boot: a
+
+# Datei für Protokoll und Fehlermeldungen.
+log: -
+
+# Die Maus sollte man solange nicht verwenden, wie es auch
+# das emulierte Betriebssystem nicht tut.
+mouse: enabled=0
+
+# Ausgabe des Debuggers.
+debugger_log: -
+#debugger_log: -
+
+# Was tun bei welchem Fehler?
+panic: action=ask
+error: action=report
+info: action=report
+debug: action=ignore
+

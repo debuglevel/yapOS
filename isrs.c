@@ -14,7 +14,7 @@ extern void isr5();
 extern void isr6();
 extern void isr7();
 extern void isr8();
-/*extern void isr9();
+extern void isr9();
 extern void isr10();
 extern void isr11();
 extern void isr12();
@@ -36,7 +36,7 @@ extern void isr27();
 extern void isr28();
 extern void isr29();
 extern void isr30();
-extern void isr31();*/
+extern void isr31();
 
 /* This is a very repetitive function... it's not hard, it's
 *  just annoying. As you can see, we set the first 32 entries
@@ -60,7 +60,7 @@ void initISRs()
     setIDTgate(7, (unsigned)isr7, 0x08, 0x8E);
 
     setIDTgate(8, (unsigned)isr8, 0x08, 0x8E);
-   /* setIDTgate(9, (unsigned)isr9, 0x08, 0x8E);
+    setIDTgate(9, (unsigned)isr9, 0x08, 0x8E);
     setIDTgate(10, (unsigned)isr10, 0x08, 0x8E);
     setIDTgate(11, (unsigned)isr11, 0x08, 0x8E);
     setIDTgate(12, (unsigned)isr12, 0x08, 0x8E);
@@ -84,7 +84,7 @@ void initISRs()
     setIDTgate(28, (unsigned)isr28, 0x08, 0x8E);
     setIDTgate(29, (unsigned)isr29, 0x08, 0x8E);
     setIDTgate(30, (unsigned)isr30, 0x08, 0x8E);
-    setIDTgate(31, (unsigned)isr31, 0x08, 0x8E);*/
+    setIDTgate(31, (unsigned)isr31, 0x08, 0x8E);
 }
 
 /* This is a simple string array. It contains the message that

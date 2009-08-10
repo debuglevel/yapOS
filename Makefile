@@ -11,8 +11,8 @@ copy: kernel.bin
 	cp kernel.bin floppy/
 	sudo umount floppy/
 
-kernel.bin: kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o
-	$(LD) -T linkerfile -o kernel.bin kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o
+kernel.bin: kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o irq_c.o timer_c.o kb_c.o
+	$(LD) -T linkerfile -o kernel.bin kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o irq_c.o timer_c.o kb_c.o
 
 
 debug:
@@ -42,6 +42,15 @@ idt_c.o: idt.c idt.h
 
 isrs_c.o: isrs.c isrs.h
 	$(CC) -g -ffreestanding -o isrs_c.o -c isrs.c -Wall -nostdlib -nostartfiles -nodefaultlibs
+
+irq_c.o: irq.c irq.h
+	$(CC) -g -ffreestanding -o irq_c.o -c irq.c -Wall -nostdlib -nostartfiles -nodefaultlibs
+
+timer_c.o: timer.c timer.h
+	$(CC) -g -ffreestanding -o timer_c.o -c timer.c -Wall -nostdlib -nostartfiles -nodefaultlibs
+
+kb_c.o: kb.c kb.h
+	$(CC) -g -ffreestanding -o kb_c.o -c kb.c -Wall -nostdlib -nostartfiles -nodefaultlibs
 
 
 clean:
