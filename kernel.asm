@@ -130,48 +130,83 @@ isr_without_errorcode 31
 
 ; We call a C function in here. We need to let the assembler know
 ; that '_fault_handler' exists in another file
-extern fault_handler
+extern interrupt_handler
 
 ; This is our common ISR stub. It saves the processor state, sets
 ; up for kernel mode segments, calls the C-level fault handler,
 ; and finally restores the stack frame.
+
+
 isr_common_stub:
-    pusha
-    push ds
-    push es
-    push fs
-    push gs
-    mov ax, 0x10   ; Load the Kernel Data Segment descriptor!
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov eax, esp   ; Push us the stack
-    push eax
-    mov eax, fault_handler
-    call eax       ; A special call, preserves the 'eip' register
-    pop eax
-    pop gs
-    pop fs
-    pop es
-    pop ds
-    popa
-    add esp, 8     ; Cleans up the pushed error code and pushed ISR number
-    iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP!
+
+	push EAX
+	push ECX
+	push EDX
+	push EBX
+	push ESP	;das ist hier eher nicht so sinnvoll. wenn dann eher direkt an den Anfang, da sich der StackPointer ja dauernd verändert. (gerade: von pusha übernommene Reihenfolge)
+	push EBP
+	push ESI
+	push EDI
+
+	push ds
+	push es
+	push fs
+	push gs
+
+	;mov ax, 0x10   ; Load the Kernel Data Segment descriptor!
+	;mov ds, ax
+	;mov es, ax
+	;mov fs, ax
+	;mov gs, ax
+
+	;Die Adresse des Stacks auf den Stack legen
+	;Das ist dann wohl der Parameter der C-Funktion
+	;mov eax, esp   ; Push us the stack
+	;push eax
+	push esp
+
+	mov eax, interrupt_handler
+	call eax       ; A special call, preserves the 'eip' register
+
+
+	;'pop eax'   enstpricht   'add esp, 4'
+	;hier wird 4 Byte/32bit hochgezählt. Ist wohl der Rückgabewert vom call
+	add esp, 4
+
+	pop gs
+	pop fs
+	pop es
+	pop ds
+
+	pop EDI
+	pop ESI
+	pop EBP
+	pop ESP
+	pop EBX
+	pop EDX
+	pop ECX
+	pop EAX
+
+
+
+	add esp, 8     ; Cleans up the pushed error code and pushed ISR number
+	iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP!
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;; IRQ ;;;;;;;;;;;;;;;;;;;;;;;
 
+; Handling ist das selbe wie bei ISRs. Aber es soll für die C-Funktionen
+; ASM-Funktionen wie irq0 .. irq15 geben.
+
 %macro irq 2
 global irq%1
 irq%1:
-	cli
-	push byte 0
-	push byte %2
-	jmp irq_common_stub
+	isr_without_errorcode %2
 %endmacro
 
-irq 0,32
+irq 0,32 ;IRQ 0
 irq 1,33
 irq 2,34
 irq 3,35
@@ -186,33 +221,4 @@ irq 11,43
 irq 12,44
 irq 13,45
 irq 14,46
-irq 15,47
-
-extern irq_handler
-
-irq_common_stub:
-    pusha
-    push ds
-    push es
-    push fs
-    push gs
-
-    mov ax, 0x10
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov eax, esp
-
-    push eax
-    mov eax, irq_handler
-    call eax
-    pop eax
-
-    pop gs
-    pop fs
-    pop es
-    pop ds
-    popa
-    add esp, 8
-    iret
+irq 15,47 ;IRQ15

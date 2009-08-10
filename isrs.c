@@ -150,5 +150,15 @@ void fault_handler(struct regs *r)
     }
 }
 
-
+/* Wird aus ASM augerufen; Unterscheidung zwischen Faults und IRQs */
+void interrupt_handler(struct regs *r)
+{
+    /* Is this a fault whose number is from 0 to 31? */
+    if (r->int_no < 32)
+    {
+      fault_handler(r);
+    }else{
+			irq_handler(r);
+		}
+}
 

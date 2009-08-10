@@ -27,7 +27,7 @@ int main() {
 	
 	printStringPosAttrib(hello, 0x0C, 80-(strlen(hello)+1),24, 2);	//tollen Versionsstring anzeigen
 
-	int a=1/0;
+	//int a=1/0;
 	
 	printString("aaa\n");
 	printString("bbb\n");
