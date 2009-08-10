@@ -1,3 +1,8 @@
+#include "timer.h"
+#include "io.h"
+#include "irq.h"
+#include "vga.h"
+
 /* This will keep track of how many ticks that the system
 *  has been running for */
 unsigned int timer_ticks = 0;
@@ -22,9 +27,9 @@ void timer_handler(struct regs *r)
     /* Increment our 'tick count' */
     timer_ticks++;
 
-    if (timer_ticks % 100 == 0)
+    if (timer_ticks % 50 == 0)
     {
-        //printString("One second has passed\n");
+        //printString("0.5 second passed\n");
     }
 }
 
@@ -46,6 +51,13 @@ void timer_wait(int ticks)
     unsigned int eticks;
 
     eticks = timer_ticks + ticks;
-    while(timer_ticks < eticks);
+		unsigned char i=0;
+	
+		//keine Ahnung, ob das so gut und richtig ist. Wenn ich keine IRQs zulassen, funktioniert der Timer nicht mehr...
+	  __asm__ __volatile__ ("sti"); 
+    while(timer_ticks < eticks){
+			//printChar(i++);
+		}
+	  __asm__ __volatile__ ("cli"); 
 }
 

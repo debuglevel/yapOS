@@ -1,5 +1,7 @@
+#include "irq.h"
 #include "isrs.h"
 #include "idt.h"
+#include "io.h"
 
 /* These are own ISRs that point to our special IRQ handler
 *  instead of the regular 'fault_handler' function */
@@ -137,6 +139,7 @@ void initIRQ()
 *  an EOI, you won't raise any more IRQs */
 void irq_handler(struct regs *r)
 {
+
     /* This is a blank function pointer */
     void (*handler)(struct regs *r);
 

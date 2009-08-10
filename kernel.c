@@ -5,6 +5,10 @@
 #include "isrs.h"
 #include "memory.h"
 #include "irq.h"
+#include "serial.h"
+#include "timer.h"
+#include "kb.h"
+#include "string.h"
 
 int main() {
 	
@@ -14,31 +18,32 @@ int main() {
 	initIRQ();
 	initTimer();
 	initVideo();
+	initSerial(1, 38400);
+	initSerial(2, 38400);
 	initKeyboard();
-  char *hello = KERNEL_BUILD;
+  __asm__ __volatile__ ("sti"); 
 	
-	
+	unsigned char *hello = KERNEL_BUILD;
 	
 	printStringPosAttrib(hello, 0x0C, 80-(strlen(hello)+1),24, 2);	//tollen Versionsstring anzeigen
 
-	
-	int a=0;
 	//a=1/0;
-	__asm__ __volatile__ ("sti"); 
 	
+	printString("aaa\n");
+	printString("bbb\n");
+	unsigned char *bla = "abcdefghijk";
+	printString("ccc\n");
+	int2str(1234567890, bla);
+	printString("ddd\n");
+	printString(bla);
+	printString("\n");
+	printString("eee\n");
 	
-	
-	printString("Booting up");
-	int i=0;
-	for (i=0; i<20; i++) {
-		timer_wait(50);
-		printString(".");
-		kbd_set_led_status(i);	//LEDs blinken lassen
-	}
-	printString(" just kidding ;-)\n");
-	
-	
+		
   //Kernel in eine Endlosschleife schicken
-  while (1);
+  while (1) {
+		__asm__ __volatile__ ("hlt");	//Ruhezustand
+	};
+	
   return 0;
 }

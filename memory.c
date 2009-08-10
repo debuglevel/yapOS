@@ -34,15 +34,4 @@ void memsetw(unsigned short *dest, unsigned short val, int count)
 	}
 }
 
-/* Gibt die Länge eines Strings zurück */
-int strlen(const unsigned char *string)
-{
-	int count=0;
-	for (count=0; *string!='\0'; count++)
-	{
-		string++;
-	}
-	
-	return count;
-}
 

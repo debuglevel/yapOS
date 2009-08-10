@@ -1,3 +1,7 @@
+#include "kb.h"
+#include "io.h"
+#include "irq.h"
+#include "timer.h"
 #include "vga.h"
 
 /* KBDUS means US Keyboard Layout. This is a scancode table
@@ -90,6 +94,7 @@ void initKeyboard()
 
 void kbd_set_led_status(unsigned char mask)
 {
+		//timer_wait(100);
 	//Wir müssen warten, bis der Controller frei ist
 	while((inb(0x64) & 2) != 0) {
 		//nichts
@@ -97,6 +102,7 @@ void kbd_set_led_status(unsigned char mask)
 	
 	//Senden, dass wir LED ändern wollen	
 	outb(0x60, 0xED);
+	
 	
 	//Auf die Antwort vom Keyboard warten - oder auf Timeout warten
 	int i=100;
@@ -115,4 +121,5 @@ void kbd_set_led_status(unsigned char mask)
 		i--;
 	}
 
+	
 }

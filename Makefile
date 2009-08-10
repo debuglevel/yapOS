@@ -11,8 +11,8 @@ copy: kernel.bin
 	cp kernel.bin floppy/
 	sudo umount floppy/
 
-kernel.bin: kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o irq_c.o timer_c.o kb_c.o
-	$(LD) -T linkerfile -o kernel.bin kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o irq_c.o timer_c.o kb_c.o
+kernel.bin: kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o irq_c.o timer_c.o kb_c.o serial_c.o string_c.o 
+	$(LD) -T linkerfile -o kernel.bin kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o idt_c.o isrs_c.o irq_c.o timer_c.o kb_c.o serial_c.o string_c.o 
 
 
 debug:
@@ -51,6 +51,12 @@ timer_c.o: timer.c timer.h
 
 kb_c.o: kb.c kb.h
 	$(CC) -g -ffreestanding -o kb_c.o -c kb.c -Wall -nostdlib -nostartfiles -nodefaultlibs
+
+serial_c.o: serial.c serial.h
+	$(CC) -g -ffreestanding -o serial_c.o -c serial.c -Wall -nostdlib -nostartfiles -nodefaultlibs
+
+string_c.o: string.c string.h
+	$(CC) -g -ffreestanding -o string_c.o -c string.c -Wall -nostdlib -nostartfiles -nodefaultlibs
 
 
 clean:
