@@ -1,0 +1,14 @@
+$ gdb kernel.bin
+GNU gdb 6.8-debian
+Copyright (C) 2008 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "i486-linux-gnu"...
+(gdb) target remote localhost:1234
+Remote debugging using localhost:1234
+main () at kernel.c:10
+10	while(1) { sleep++; }
+(gdb) 
+
