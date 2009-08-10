@@ -53,11 +53,13 @@ void timer_wait(int ticks)
     eticks = timer_ticks + ticks;
 		unsigned char i=0;
 	
-		//keine Ahnung, ob das so gut und richtig ist. Wenn ich keine IRQs zulassen, funktioniert der Timer nicht mehr...
-	  __asm__ __volatile__ ("sti"); 
+		//keine Ahnung, ob das so gut und richtig ist. Wenn ich keine IRQs zulasse, funktioniert der Timer nicht mehr...
+	  //__asm__ __volatile__ ("cli"); 
     while(timer_ticks < eticks){
 			//printChar(i++);
+			__asm__ __volatile__ ("hlt");	//Ruhezustand
 		}
-	  __asm__ __volatile__ ("cli"); 
+		//__asm__ __volatile__ ("sti"); 
+	  
 }
 

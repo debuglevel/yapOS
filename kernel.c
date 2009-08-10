@@ -14,7 +14,7 @@ int main() {
 	
 	initGDT();
 	initIDT();
-	initISRs ();
+	initISRs();
 	initIRQ();
 	initTimer();
 	initVideo();
@@ -27,7 +27,7 @@ int main() {
 	
 	printStringPosAttrib(hello, 0x0C, 80-(strlen(hello)+1),24, 2);	//tollen Versionsstring anzeigen
 
-	//a=1/0;
+	int a=1/0;
 	
 	printString("aaa\n");
 	printString("bbb\n");
@@ -38,6 +38,15 @@ int main() {
 	printString(bla);
 	printString("\n");
 	printString("eee\n");
+
+	
+	printString("Testing Wait... ");
+	timer_wait(200);
+	printString("done\n");
+	printString("Testing Wait... ");
+	timer_wait(200);
+	printString("done\n");
+	
 	
 		
   //Kernel in eine Endlosschleife schicken

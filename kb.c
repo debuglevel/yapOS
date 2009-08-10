@@ -96,7 +96,7 @@ void kbd_set_led_status(unsigned char mask)
 {
 		//timer_wait(100);
 	//Wir müssen warten, bis der Controller frei ist
-	while((inb(0x64) & 2) != 0) {
+	while((inb(0x64) & 0x02) != 0) {
 		//nichts
 	}
 	
