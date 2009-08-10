@@ -3,9 +3,20 @@
 
 void clearScreen();
 void fillScreen(unsigned char chr, unsigned char color);
-void printCharPos(unsigned char chr, unsigned char color, unsigned char x, unsigned char y, unsigned char mode);
-void printStringPos(unsigned char *string, unsigned char color, unsigned char x, unsigned char y, unsigned char mode);
-void printString(unsigned char *string, unsigned char color, unsigned char mode);
+
+void printChar(unsigned char chr);
+void printCharAttrib(unsigned char chr, unsigned char color, unsigned char mode);
+
+void printCharPos(unsigned char chr, unsigned char x, unsigned char y);
+void printCharPosAttrib(unsigned char chr, unsigned char color, unsigned char x, unsigned char y, unsigned char mode);
+
+void printString(unsigned char *string);
+void printStringAttrib(unsigned char *string, unsigned char color, unsigned char mode);
+
+void printStringPosAttrib(unsigned char *string, unsigned char color, unsigned char x, unsigned char y, unsigned char mode);
+
+void scroll();
+
 void updateCurrentPosition();
 void moveCursor(unsigned char x, unsigned char y);
 void removeCursor();

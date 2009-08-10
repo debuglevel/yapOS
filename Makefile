@@ -11,8 +11,8 @@ copy: kernel.bin
 	cp kernel.bin floppy/
 	sudo umount floppy/
 
-kernel.bin: kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o
-	$(LD) -T linkerfile -o kernel.bin kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o
+kernel.bin: kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o
+	$(LD) -T linkerfile -o kernel.bin kernel_asm.o kernel_c.o vga_c.o io_c.o memory_c.o gdt_c.o
 
 
 debug:
@@ -33,6 +33,9 @@ vga_c.o: vga.c vga.h
 
 io_c.o: io.c io.h
 	$(CC) -g -ffreestanding -o io_c.o -c io.c -Wall -nostdlib -nostartfiles -nodefaultlibs
+
+gdt_c.o: gdt.c gdt.h
+	$(CC) -g -ffreestanding -o gdt_c.o -c gdt.c -Wall -nostdlib -nostartfiles -nodefaultlibs
 
 
 clean:
