@@ -139,6 +139,9 @@ extern interrupt_handler
 
 isr_common_stub:
 
+;mov ebx, 0x42
+;add ebx, 1
+
 	push EAX
 	push ECX
 	push EDX
@@ -170,8 +173,14 @@ isr_common_stub:
 
 
 	;'pop eax'   enstpricht   'add esp, 4'
-	;hier wird 4 Byte/32bit hochgezählt. Ist wohl der Rückgabewert vom call
+	;hier wird 4 Byte/32bit hochgezählt. Der Parameter der C Funktion.
 	add esp, 4
+
+;	pop eax
+;	mov esp, eax
+	; Rückgabewert (ein Zeiger auf einen Stack) in den Stackpointer esp schieben
+	mov esp, eax
+	
 
 	pop gs
 	pop fs

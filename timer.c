@@ -24,13 +24,16 @@ void set_timer_frequency(int hz)
 *  been smoking something funky */
 void timer_handler(struct regs *r)
 {
-    /* Increment our 'tick count' */
-    timer_ticks++;
+	/* Increment our 'tick count' */
+	timer_ticks++;
 
-    if (timer_ticks % 50 == 0)
-    {
-        //printString("0.5 second passed\n");
-    }
+	if (timer_ticks % 50 == 0)
+	{
+		//r = schedule(r);
+		printString("0.5 second passed\n");
+	}
+
+	//return r;
 }
 
 /* Sets up the system clock by installing the timer handler

@@ -28,7 +28,7 @@ int main() {
 	printStringPosAttrib(hello, 0x0C, 80-(strlen(hello)+1),24, 2);	//tollen Versionsstring anzeigen
 
 	//int a=1/0;
-	
+	/*
 	printString("aaa\n");
 	printString("bbb\n");
 	unsigned char *bla = "abcdefghijk";
@@ -45,7 +45,7 @@ int main() {
 	printString("done\n");
 	printString("Testing Wait... ");
 	timer_wait(200);
-	printString("done\n");
+	printString("done\n");*/
 	
 	
 		

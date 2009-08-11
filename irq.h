@@ -6,4 +6,7 @@
 void initIRQ();
 void irq_install_handler(int irq, void (*handler)(struct regs *r));
 
+void task_a(void);
+void task_b(void);
+
 #endif

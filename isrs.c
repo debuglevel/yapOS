@@ -136,7 +136,7 @@ unsigned char *exception_messages[] =
 *  endless loop. All ISRs disable interrupts while they are being
 *  serviced as a 'locking' mechanism to prevent an IRQ from
 *  happening and messing up kernel data structures */
-void fault_handler(struct regs *r)
+void fault_handler(struct regs* r)
 {
     /* Is this a fault whose number is from 0 to 31? */
     if (r->int_no < 32)
@@ -151,14 +151,19 @@ void fault_handler(struct regs *r)
 }
 
 /* Wird aus ASM augerufen; Unterscheidung zwischen Faults und IRQs */
-void interrupt_handler(struct regs *r)
+struct regs* interrupt_handler(struct regs* r)
 {
-    /* Is this a fault whose number is from 0 to 31? */
-    if (r->int_no < 32)
-    {
-      fault_handler(r);
-    }else{
-			irq_handler(r);
-		}
+
+	//printChar(r->ebx);
+	
+	/* Is this a fault whose number is from 0 to 31? */
+	if (r->int_no < 32)
+	{
+		fault_handler(r);
+	}else{
+		irq_handler(r);
+	}
+
+	return r;
 }
 
