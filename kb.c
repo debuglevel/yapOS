@@ -50,7 +50,7 @@ unsigned char kbd_us[128] =
 };	
 
 /* Handles the keyboard interrupt */
-void keyboard_handler(struct regs *r)
+struct regs* keyboard_handler(struct regs *r)
 {
     unsigned char scancode;
 
@@ -67,7 +67,8 @@ void keyboard_handler(struct regs *r)
     else
     {
 			//ganz sinnfrei LEDs blinken lassen, wenn man was eingibt ;)
-			kbd_set_led_status(scancode);
+			//durch timer_wait verhakt sich irgendwas im interrupt handling - auskommentiert
+			//kbd_set_led_status(scancode);
 			
 			
         /* Here, a key was just pressed. Please note that if you
@@ -84,6 +85,8 @@ void keyboard_handler(struct regs *r)
         *  you would add 128 to the scancode when you look for it */
         printChar(kbd_us[scancode]);
     }
+
+	return r;
 }
 
 void initKeyboard()

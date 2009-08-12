@@ -16,16 +16,22 @@ int main() {
 	initIDT();
 	initISRs();
 	initIRQ();
+
+
+	
 	initTimer();
 	initVideo();
 	initSerial(1, 38400);
 	initSerial(2, 38400);
 	initKeyboard();
+	//	init_multitasking();
   __asm__ __volatile__ ("sti"); 
 	
 	unsigned char *hello = KERNEL_BUILD;
 	
 	printStringPosAttrib(hello, 0x0C, 80-(strlen(hello)+1),24, 2);	//tollen Versionsstring anzeigen
+	//printString("test");
+	printCharPosAttrib (0x42, 0x7E, 40, 0, MODE_DRAW_FG|MODE_DRAW_BG);
 
 	//int a=1/0;
 	/*
@@ -51,7 +57,9 @@ int main() {
 		
   //Kernel in eine Endlosschleife schicken
   while (1) {
-		__asm__ __volatile__ ("hlt");	//Ruhezustand
+		//printCharPosAttrib (0x45, 0x7E, 45, 0, MODE_DRAW_FG|MODE_DRAW_BG);
+		//printString("_");
+		//__asm__ __volatile__ ("hlt");	//Ruhezustand
 	};
 	
   return 0;

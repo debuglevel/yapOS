@@ -146,7 +146,7 @@ isr_common_stub:
 	push ECX
 	push EDX
 	push EBX
-	push ESP	;das ist hier eher nicht so sinnvoll. wenn dann eher direkt an den Anfang, da sich der StackPointer ja dauernd verändert. (gerade: von pusha übernommene Reihenfolge)
+	;push ESP	;das ist hier eher nicht so sinnvoll. wenn dann eher direkt an den Anfang, da sich der StackPointer ja dauernd verändert. (gerade: von pusha übernommene Reihenfolge)
 	push EBP
 	push ESI
 	push EDI
@@ -178,6 +178,7 @@ isr_common_stub:
 
 ;	pop eax
 ;	mov esp, eax
+
 	; Rückgabewert (ein Zeiger auf einen Stack) in den Stackpointer esp schieben
 	mov esp, eax
 	
@@ -190,7 +191,7 @@ isr_common_stub:
 	pop EDI
 	pop ESI
 	pop EBP
-	pop ESP
+	;pop ESP
 	pop EBX
 	pop EDX
 	pop ECX

@@ -64,30 +64,39 @@ void printCharPosAttrib (unsigned char chr, unsigned char color, unsigned char x
 		attribute = attribute | (COLOR_NORMAL & 0xF0);
 	}
 
-
-	switch (chr) {
-		case '\n':
-			currentLine++;	//Zähler für aktuelle Zeile erhöhen
-			currentColumn=0;	//Zähler für aktuelle Spalte zurücksetzen
-			break;
-		case '\r':
-			currentColumn=0;
-			break;
-		case '\a':
-			break;
-		case 0x08:
-			if (currentColumn>0) {
-				currentColumn--;
-			}
-			break;
-		default:
-			*offset = chr | attribute<<8;
-			
-			currentColumn++;	//Zähler für aktuelle Spalte erhöhen
-			break;
-  }
-	updateCurrentPosition();
-	checkScroll();
+	//absolut positioniert
+	/*if (absolute == 1)
+	{
+		*offset = chr | attribute<<8;
+	}
+	else
+	{*/
+		switch (chr) {
+			case '\n':
+				currentLine++;	//Zähler für aktuelle Zeile erhöhen
+				currentColumn=0;	//Zähler für aktuelle Spalte zurücksetzen
+				break;
+			case '\r':
+				currentColumn=0;
+				break;
+			case '\a':
+				break;
+			case 0x08:
+				if (currentColumn>0) {
+					currentColumn--;
+				}
+				break;
+			default:
+				*offset = chr | attribute<<8;
+				
+				currentColumn++;	//Zähler für aktuelle Spalte erhöhen
+				
+				break;
+		}
+		updateCurrentPosition();
+		checkScroll();
+	//}
+	
 }
 
 //Zeichen an Position schreiben

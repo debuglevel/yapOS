@@ -22,18 +22,18 @@ void set_timer_frequency(int hz)
 *  timer fires. By default, the timer fires 18.222 times
 *  per second. Why 18.222Hz? Some engineer at IBM must've
 *  been smoking something funky */
-void timer_handler(struct regs *r)
+struct regs* timer_handler(struct regs *r)
 {
 	/* Increment our 'tick count' */
 	timer_ticks++;
-
+r = schedule(r);
 	if (timer_ticks % 50 == 0)
 	{
-		//r = schedule(r);
-		printString("0.5 second passed\n");
+		
+//		printString("0.5 second passed\n");
 	}
 
-	//return r;
+	return r;
 }
 
 /* Sets up the system clock by installing the timer handler
@@ -57,6 +57,7 @@ void timer_wait(int ticks)
 		unsigned char i=0;
 	
 		//keine Ahnung, ob das so gut und richtig ist. Wenn ich keine IRQs zulasse, funktioniert der Timer nicht mehr...
+	//und wenn ich das auf kb-interrupt-zeug aufrufe, dann sind interrupts gar nicht zugelassen...
 	  //__asm__ __volatile__ ("cli"); 
     while(timer_ticks < eticks){
 			//printChar(i++);

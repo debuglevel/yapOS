@@ -153,7 +153,6 @@ void fault_handler(struct regs* r)
 /* Wird aus ASM augerufen; Unterscheidung zwischen Faults und IRQs */
 struct regs* interrupt_handler(struct regs* r)
 {
-
 	//printChar(r->ebx);
 	
 	/* Is this a fault whose number is from 0 to 31? */
@@ -161,7 +160,7 @@ struct regs* interrupt_handler(struct regs* r)
 	{
 		fault_handler(r);
 	}else{
-		irq_handler(r);
+		r = irq_handler(r);
 	}
 
 	return r;

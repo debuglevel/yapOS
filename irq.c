@@ -2,11 +2,12 @@
 #include "isrs.h"
 #include "idt.h"
 #include "io.h"
+#include "vga.h"
 
 /* These are own ISRs that point to our special IRQ handler
 *  instead of the regular 'fault_handler' function */
-extern void irq0();
-extern void irq1();
+extern struct regs* irq0();
+extern struct regs* irq1();
 extern void irq2();
 extern void irq3();
 extern void irq4();
@@ -24,7 +25,7 @@ extern void irq15();
 
 /* This array is actually an array of function pointers. We use
 *  this to handle custom IRQ handlers for a given IRQ */
-void *irq_routines[16] =
+struct regs* *irq_routines[16] =
 {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0
@@ -137,18 +138,18 @@ void initIRQ()
 *  interrupt at BOTH controllers, otherwise, you only send
 *  an EOI command to the first controller. If you don't send
 *  an EOI, you won't raise any more IRQs */
-void irq_handler(struct regs *r)
+struct regs* irq_handler(struct regs *r)
 {
 
     /* This is a blank function pointer */
-    void (*handler)(struct regs *r);
+    struct regs* (*handler)(struct regs *r);
 
     /* Find out if we have a custom handler to run for this
     *  IRQ, and then finally, run it */
     handler = irq_routines[r->int_no - 32];
     if (handler)
     {
-        handler(r);
+        r = handler(r);
     }
 
     /* If the IDT entry that was invoked was greater than 40
@@ -162,6 +163,8 @@ void irq_handler(struct regs *r)
     /* In either case, we need to send an EOI to the master
     *  interrupt controller too */
     outb(0x20, 0x20);
+
+	return r;
 }
 
 
@@ -176,6 +179,7 @@ void irq_handler(struct regs *r)
 
 static char stack_a[4096];
 static char stack_b[4096];
+static char stack_c[4096];
  
 /*
  * Jeder Task braucht seinen eigenen Stack, auf dem er beliebig arbeiten kann,
@@ -220,13 +224,14 @@ struct regs* init_task(char* stack, void* entry)
 
 
 static int current_task = -1;
-static int num_tasks = 2;
-static struct regs* task_states[2];
+static int num_tasks = 3;
+static struct regs* task_states[3];
  
 void init_multitasking(void)
 {
     task_states[0] = init_task(stack_a, task_a);
     task_states[1] = init_task(stack_b, task_b);
+		task_states[2] = init_task(stack_c, task_c);
 }
 
 /*
@@ -248,12 +253,20 @@ struct regs* schedule(struct regs *r)
     /*
      * Naechsten Task auswaehlen. Wenn alle durch sind, geht es von vorne los
      */
-    current_task++;
-    current_task %= num_tasks;
+	
+	if (task_states[0]!=0)
+	{
+		do
+		{
+    	current_task++;
+    	current_task %= num_tasks;
+		}while(task_states[current_task] == 0);
  
     /* Prozessorzustand des neuen Tasks aktivieren */
     r = task_states[current_task];
- 
+	}
+	
+		
     return r;
 }
 
@@ -261,14 +274,26 @@ struct regs* schedule(struct regs *r)
 
 void task_a(void)
 {
+	printCharPosAttrib (0x41, 0x7E, 45, 0, MODE_DRAW_FG|MODE_DRAW_BG);
+	printCharPosAttrib (0x44, 0x7E, 45, 0, MODE_DRAW_FG|MODE_DRAW_BG);
     while (1) {
-        printString("A");
+			//printCharPosAttrib (0x45, 0x7E, 45, 0, MODE_DRAW_FG|MODE_DRAW_BG);
+//			printCharPosAttrib (0x42, 0x7E, 1, 2, MODE_DRAW_FG|MODE_DRAW_BG);
+				//printStringPosAttrib("hallo", 0x0C, 80-(strlen("hallo")+1),24, 2);	//tollen Versionsstring anzeigen
+
     }
 }
  
 void task_b(void)
 {
     while (1) {
-        printString("B");
+        //printString("B");
+    }
+}
+
+void task_c(void)
+{
+    while (1) {
+        //printString("C");
     }
 }

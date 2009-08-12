@@ -9,7 +9,7 @@ void initISRs();
 struct regs
 {
     unsigned long gs, fs, es, ds;      /* pushed the segs last */
-    unsigned long edi, esi, ebp, esp, ebx, edx, ecx, eax;  /* pushed by 'pusha' */
+    unsigned long edi, esi, ebp, /*esp,*/ ebx, edx, ecx, eax;  /* pushed by 'pusha' */
     unsigned long int_no, err_code;    /* our 'push byte #' and ecodes do this */
     unsigned long eip, cs, eflags, useresp, ss;   /* pushed by the processor automatically */ 
 };
