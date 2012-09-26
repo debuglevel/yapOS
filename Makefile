@@ -2,7 +2,7 @@ CC = gcc
 ASM = nasm
 LD = ld
 DEBUGGER = ddd
-
+QEMU = qemu-system-i386
 
 SRCS = $(shell find -name '*.asm' -o -name '*.c')
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
@@ -16,7 +16,7 @@ ASMFLAGS = -f elf
 all: kernel.bin qemu
 
 qemu: floppy.img
-	qemu -s -fda floppy.img
+	$(QEMU) -s -fda floppy.img
 
 floppy.img: kernel.bin
 	sudo mount -o loop floppy.img floppy/
